@@ -1,27 +1,10 @@
 import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core'
-import { Subject } from 'rxjs'
+import { Observable, Subject } from 'rxjs'
 import { fadeIn, fadeInOut } from '../animations'
 import { EventEmitter } from '@angular/core';
-const randomMessages = [
-  'Nice to meet you',
-  'We now support Angular 10!',
-  'How are you?',
-  'Not too bad, thanks',
-  'What do you do?',
-  'Is there anything else I can help you with?',
-  'That\'s awesome',
-  'Angular 10 Elements is the bomb 💣 ',
-  'Can you explain in more detail?',
-  'Anyway I\'ve gotta go now',
-  'It was a pleasure to chat with you',
-  'We are happy to make you a custom offer!',
-  'Bye',
-  ':)',
-]
+import { ChatService } from '../../services/chat.service';
 
 const rand = max => Math.floor(Math.random() * max)
-
-const getRandomMessage = () => randomMessages[rand(randomMessages.length)]
 
 @Component({
   selector: 'chat-widget',
@@ -34,6 +17,11 @@ export class ChatWidgetComponent implements OnInit {
   @Input() public theme: 'blue'
 
   public _visible = false
+
+  answer: string = "default answer"
+  constructor(private chatService: ChatService){
+
+}
 
   public get visible() {
     return this._visible
@@ -51,16 +39,17 @@ export class ChatWidgetComponent implements OnInit {
 
   public focus = new EventEmitter<any>()
 
+  // https://randomuser.me/api/portraits/men/${rand(100)}.jpg    --- Use this if you want to display user images
   public operator = {
     name: 'HealthBot',
     status: 'Online',
-    avatar: `../../../assets/istockphoto.jpg`,
+    avatar: `../../../assets/istockphoto.jpg`
   }
 
   public client = {
     name: 'Guest User',
     status: 'online',
-    avatar: `https://randomuser.me/api/portraits/men/${rand(100)}.jpg`,
+    avatar: `../../../assets/istockphoto.jpg`,
   }
 
   public messages: Array<{ from: string; text: string; type: 'received' | 'sent'; date: number }> = [];
@@ -86,8 +75,12 @@ export class ChatWidgetComponent implements OnInit {
     this.focus.next(true)
   }
 
-  public randomMessage() {
-    this.addMessage(this.operator, getRandomMessage(), 'received')
+  public getResponseMessage(message) {
+    this.chatService.postChatData(message).subscribe(data => {
+      this.answer = data.answer
+      this.addMessage(this.operator, this.answer , 'received')
+    });
+   
   }
 
   ngOnInit() {
@@ -95,6 +88,12 @@ export class ChatWidgetComponent implements OnInit {
     setTimeout(() => {
       this.addMessage(this.operator, 'Hi, how can we help you?', 'received')
     }, 1500)
+
+    setTimeout(() => {
+      this.addMessage(this.operator, `This chatbot is not a substitute for professional medical advice, diagnosis, or treatment. If you have a medical emergency, please seek immediate help from a healthcare provider.`, 'received')
+    }, 2500)
+
+
   }
 
   public toggleChat() {
@@ -105,9 +104,9 @@ export class ChatWidgetComponent implements OnInit {
     if (message.trim() === '') {
       return
     }
-    console.log(this.messages)
+    console.log(message)
     this.addMessage(this.client, message, 'sent')
-    setTimeout(() => this.randomMessage(), 1000)
+    setTimeout(() => this.getResponseMessage(message), 1000)
   }
 
   @HostListener('document:keypress', ['$event'])

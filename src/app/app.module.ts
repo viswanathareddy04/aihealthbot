@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { ElementModule } from './element.module'
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ElementModule } from './element.module'
     FormsModule,
     BrowserModule,
     AppRoutingModule,
-    ElementModule
+    ElementModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
