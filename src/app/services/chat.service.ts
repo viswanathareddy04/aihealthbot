@@ -41,7 +41,7 @@ export class ChatService {
   // create account here and replace the apis below
   // response should be:  {     "question": "this is question",      "answer": "this is an answer"   }
   postChatData(question: string): Observable<ChatConversation> { 
-   return this.http.post<any>('https://8yk4y.mocklab.io/json', { value: 'abc-def-ghi' })  // chnage this value to question from the parameter passed to this method
+   return this.http.post<any>('https://8yk4y.mocklab.io/json', { value: question })  // chnage this value to question from the parameter passed to this method
     .pipe ( 
         map( data =>  {
                      return new ChatConversation(data.question, data.answer);

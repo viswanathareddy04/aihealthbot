@@ -18,6 +18,8 @@ export class ChatWidgetComponent implements OnInit {
 
   public _visible = false
 
+  public _displayButtons: boolean = false
+
   answer: string = "default answer"
   constructor(private chatService: ChatService){
 
@@ -88,12 +90,13 @@ export class ChatWidgetComponent implements OnInit {
     setTimeout(() => {
       this.addMessage(this.operator, 'Hi, how can we help you?', 'received')
     }, 1500)
-
     setTimeout(() => {
       this.addMessage(this.operator, `This chatbot is not a substitute for professional medical advice, diagnosis, or treatment. If you have a medical emergency, please seek immediate help from a healthcare provider.`, 'received')
     }, 2500)
-
-
+    setTimeout(() => {
+      this.addMessage(this.operator, "1. Book Appointment <br/> 2. Reschedule Appointment  <br/> 3. Cancel Appointment <br/><br/> Please select one of the option above ", 'received')
+    }, 3500)
+    console.log(this.messages)
   }
 
   public toggleChat() {
