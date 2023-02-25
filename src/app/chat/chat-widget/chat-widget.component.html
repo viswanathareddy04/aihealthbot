@@ -15,6 +15,7 @@
     </div>
     <div class="chat-box-main">
       <div class="chat-message-bottom" #bottom></div>
+     
       <ng-container *ngFor="let message of messages">
         <div class="chat-message" [class.chat-message-received]="message['type'] === 'received'"
              [@fadeIn]

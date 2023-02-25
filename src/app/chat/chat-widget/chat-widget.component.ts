@@ -4,12 +4,10 @@ import { fadeIn, fadeInOut } from '../animations'
 import { EventEmitter } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 
-const rand = max => Math.floor(Math.random() * max)
-
 @Component({
   selector: 'chat-widget',
   templateUrl: './chat-widget.component.html',
-  styleUrls: ['./chat-widget.component.css'],
+  styleUrls: ['./chat-widget.component.scss'],
   animations: [fadeInOut, fadeIn],
 })
 export class ChatWidgetComponent implements OnInit {
